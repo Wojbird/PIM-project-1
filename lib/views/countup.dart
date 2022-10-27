@@ -1,41 +1,32 @@
-import 'dart:io';
-import 'package:first_pim_project/views/countup.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:core';
+
+import 'package:first_pim_project/views/countdown.dart';
 import 'package:flutter/material.dart';
 import '../widgets/round-button.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
-class CountdownPage extends StatefulWidget {
-  const CountdownPage({Key? key}) : super(key: key);
+class CountupPage extends StatefulWidget {
+  const CountupPage({Key? key}) : super(key: key);
 
   @override
-  _CountdownPageState createState() => _CountdownPageState();
+  _CountupPageState createState() => _CountupPageState();
 }
 
-class _CountdownPageState extends State<CountdownPage>
+class _CountupPageState extends State<CountupPage>
     with TickerProviderStateMixin {
   late AnimationController controller;
-
+  late Stopwatch _stopwatch;
   bool isPlaying = false;
 
-  String get countText {
-    Duration count = controller.duration! * controller.value;
-    return controller.isDismissed
-        ? '${controller.duration!.inHours}:${(controller.duration!.inMinutes % 60).toString().padLeft(2, '0')}:${(controller.duration!.inSeconds % 60).toString().padLeft(2, '0')}'
-        : '${count.inHours}:${(count.inMinutes % 60).toString().padLeft(2, '0')}:${(count.inSeconds % 60).toString().padLeft(2, '0')}';
+  String countTime(int milliseconds) {
+    var secs = milliseconds ~/ 1000;
+    var hours = (secs ~/ 3600).toString().padLeft(2, '0');
+    var minutes = ((secs % 3600) ~/ 60).toString().padLeft(2, '0');
+    var seconds = (secs % 60).toString().padLeft(2, '0');
+    return "$hours:$minutes:$seconds";
   }
 
-  double progressValue = 0;
+  double progressValue = 1;
   Duration duration = Duration(seconds: 5);
-  Duration lastDuration = Duration(seconds: 60);
-
-  void notify() {
-    if (countText == '0:00:00') {
-      FlutterRingtonePlayer.playAlarm();
-      sleep(duration);
-      FlutterRingtonePlayer.stop();
-    }
-  }
 
   @override
   void initState() {
@@ -44,23 +35,23 @@ class _CountdownPageState extends State<CountdownPage>
       vsync: this,
       duration: Duration(seconds: 60),
     );
-    controller.addListener(
-      () {
-        notify();
-        if (controller.isDismissed) {
-          setState(() {
-            progressValue = 1.0;
-            isPlaying = false;
-          });
-        } else {
-          setState(
-            () {
-              progressValue = controller.value;
-            },
-          );
-        }
-      },
-    );
+    _stopwatch = Stopwatch();
+    controller.addListener(() {
+      setState(
+        () {
+          progressValue = controller.value;
+        },
+      );
+    });
+  }
+
+  void handleStartStop() {
+    if (_stopwatch.isRunning) {
+      _stopwatch.stop();
+    } else {
+      _stopwatch.start();
+    }
+    setState(() {});
   }
 
   @override
@@ -90,31 +81,10 @@ class _CountdownPageState extends State<CountdownPage>
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      if (controller.isDismissed) {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => Container(
-                            height: 300,
-                            child: CupertinoTimerPicker(
-                              initialTimerDuration: lastDuration,
-                              onTimerDurationChanged: (time) {
-                                setState(
-                                  () {
-                                    controller.duration = time;
-                                    lastDuration = time;
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      }
-                    },
                     child: AnimatedBuilder(
                       animation: controller,
                       builder: (context, child) => Text(
-                        countText,
+                        countTime(_stopwatch.elapsedMilliseconds),
                         style: TextStyle(
                           fontSize: 60,
                           fontWeight: FontWeight.bold,
@@ -133,9 +103,14 @@ class _CountdownPageState extends State<CountdownPage>
               children: [
                 GestureDetector(
                   onTap: () {
+                    handleStartStop();
                     if (controller.isAnimating == false) {
-                      controller.reverse(
-                          from: controller.value == 0 ? 1.0 : controller.value);
+                      controller.forward();
+                      controller.addListener(() {
+                        if (controller.isCompleted) {
+                          controller.repeat();
+                        }
+                      });
                       setState(() {
                         isPlaying = true;
                       });
@@ -155,6 +130,10 @@ class _CountdownPageState extends State<CountdownPage>
                 GestureDetector(
                   onTap: () {
                     controller.reset();
+                    if (_stopwatch.isRunning) {
+                      _stopwatch.stop();
+                    }
+                    _stopwatch.reset();
                     setState(() {
                       isPlaying = false;
                     });
@@ -168,13 +147,13 @@ class _CountdownPageState extends State<CountdownPage>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CountupPage()),
+                          builder: (context) => const CountdownPage()),
                     );
                   },
                   child: RoundButton(
-                    icon: Icons.timer,
+                    icon: Icons.alarm,
                   ),
-                ),
+                )
               ],
             ),
           )
