@@ -7,24 +7,111 @@
         android:layout_height="match_parent"
         tools:context=".SecondFragment">
 
-    <TextView
-            android:id="@+id/textview_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/button_second"
-    />
-
-    <Button
-            android:id="@+id/button_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/previous"
-            app:layout_constraintTop_toBottomOf="@id/textview_second"
-            app:layout_constraintStart_toStartOf="parent"
+    <ProgressBar
+            android:id="@+id/progressBar"
+            android:background="@drawable/ic_circle_2"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="100"
+            android:progressDrawable="@drawable/ic_circle_1"
+            android:rotation="-90"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-    />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+            android:id="@+id/edit_text_input"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/text_view_counter"
+            android:layout_centerHorizontal="true"
+            android:hint="@string/minutes"
+            android:inputType="number"
+            android:maxLength="4"
+            app:layout_constraintBottom_toTopOf="@+id/text_view_counter"
+            app:layout_constraintEnd_toEndOf="@+id/text_view_counter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.456" android:autofillHints=""/>
+
+    <Button
+            android:id="@+id/button_set"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/edit_text_input"
+            android:layout_toEndOf="@+id/edit_text_input"
+            android:text="@string/set"
+            android:backgroundTint="@color/purple_700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/text_view_counter"
+            app:layout_constraintStart_toStartOf="@+id/text_view_counter"
+            app:layout_constraintHorizontal_bias="0.638"/>
+
+    <TextView
+            android:id="@+id/text_view_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timer_time_00"
+            android:textColor="@android:color/black"
+            android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+            android:id="@+id/button_start_pause"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_counter"
+            android:text="@string/start"
+            android:backgroundTint="@color/dark_green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_counter"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+            android:id="@+id/button_reset"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_counter"
+            android:layout_toEndOf="@+id/button_start_pause"
+            android:text="@string/reset"
+            android:backgroundTint="@color/red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_counter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.853"/>
+
+    <Button
+            android:id="@+id/button_to_stopwatch"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_counter"
+            android:text="@string/stopwatch"
+            android:backgroundTint="@color/purple_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_start_pause"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"/>
+
+    <Button
+            android:id="@+id/button_to_timer"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_counter"
+            android:text="@string/timer"
+            android:backgroundTint="@color/purple_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_reset"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.853"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
