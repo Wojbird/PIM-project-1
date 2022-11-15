@@ -12,7 +12,7 @@
             android:background="@drawable/ic_circle_2"
             android:indeterminate="false"
             android:max="100"
-            android:progress="100"
+            android:progress="0"
             android:progressDrawable="@drawable/ic_circle_1"
             android:rotation="-90"
             style="?android:attr/progressBarStyleHorizontal"
@@ -35,7 +35,7 @@
             app:layout_constraintBottom_toTopOf="@+id/text_view_counter"
             app:layout_constraintEnd_toEndOf="@+id/text_view_counter"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.456" android:autofillHints=""/>
+            app:layout_constraintHorizontal_bias="0.456"/>
 
     <Button
             android:id="@+id/button_set"
