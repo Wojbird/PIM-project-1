@@ -12,6 +12,9 @@ import com.example.pim_project_1.databinding.FragmentFirstBinding
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
+    enum class StopwatchState{
+        Stopped, Paused, Running
+    }
 
     private var _binding: FragmentFirstBinding? = null
 
