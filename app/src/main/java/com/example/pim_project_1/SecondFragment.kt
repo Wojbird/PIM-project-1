@@ -20,16 +20,8 @@ import com.example.pim_project_1.util.PrefUtil
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
+
     companion object {
-        fun setAlarm(context: Context, nowSeconds: Long, secondsRemaining: Long): Long{
-            val wakeUpTime = (nowSeconds + secondsRemaining) * 1000
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val intent = Intent(context, TimerExpiredReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, wakeUpTime, pendingIntent)
-            PrefUtil.setAlarmSetTime(nowSeconds, context)
-            return wakeUpTime
-        }
 
         fun removeAlarm(context: Context){
             val intent = Intent(context, TimerExpiredReceiver::class.java)
@@ -39,9 +31,9 @@ class SecondFragment : Fragment() {
             PrefUtil.setAlarmSetTime(0, context)
         }
 
-    val nowSeconds: Long
-        get() = Calendar.getInstance().timeInMillis / 1000
-}
+        val nowSeconds: Long
+            get() = Calendar.getInstance().timeInMillis / 1000
+    }
     enum class TimerState{
         Stopped, Paused, Running, Setting
     }
@@ -61,7 +53,7 @@ class SecondFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
@@ -78,27 +70,26 @@ class SecondFragment : Fragment() {
         binding.textViewCounter.setOnClickListener {
             timerState =  TimerState.Setting
             updateButtons()
-
         }
 
         binding.buttonSet.setOnClickListener {
-            timerState =  TimerState.Stopped
+            setTimerManually()
             updateButtons()
         }
 
-        binding.buttonStart.setOnClickListener{v ->
+        binding.buttonStart.setOnClickListener{
             startTimer()
-            timerState =  TimerState.Running
+            timerState = TimerState.Running
             updateButtons()
         }
 
-        binding.buttonPause.setOnClickListener { v ->
+        binding.buttonPause.setOnClickListener {
             timer.cancel()
             timerState = TimerState.Paused
             updateButtons()
         }
 
-        binding.buttonReset.setOnClickListener { v ->
+        binding.buttonReset.setOnClickListener {
             timer.cancel()
             onTimerFinished()
         }
@@ -116,11 +107,6 @@ class SecondFragment : Fragment() {
 
         if (timerState == TimerState.Running){
             timer.cancel()
-            val wakeUpTime = setAlarm(requireContext().applicationContext, nowSeconds, secondsRemaining)
-            //TODO: show notification
-        }
-        else if (timerState == TimerState.Paused){
-            //TODO: show notification
         }
 
         PrefUtil.setPreviousTimerLengthSeconds(timerLengthSeconds, requireContext().applicationContext)
@@ -184,6 +170,26 @@ class SecondFragment : Fragment() {
                 updateCountdownUI()
             }
         }.start()
+    }
+
+    private fun setTimerManually(){
+        timerState =  TimerState.Stopped
+
+        val text = binding.editTextInput.text.toString()
+
+        val lengthInMinutes: Int = if(text.isNotEmpty()){
+            PrefUtil.getTimerLengthFromEditText(text.toInt(), requireContext().applicationContext)
+        } else{
+            PrefUtil.getTimerLength(requireContext().applicationContext)
+        }
+
+        timerLengthSeconds = (lengthInMinutes * 60L)
+        binding.progressBar.max = timerLengthSeconds.toInt()
+        PrefUtil.setSecondsRemaining(timerLengthSeconds, requireContext().applicationContext)
+        secondsRemaining = timerLengthSeconds
+
+        updateButtons()
+        updateCountdownUI()
     }
 
     private fun setNewTimerLength(){

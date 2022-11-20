@@ -5,7 +5,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SecondFragment">
+        tools:context=".SecondFragment"
+        android:background="@color/purple_gray">
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/progressBar"
@@ -14,6 +15,7 @@
             android:minWidth="425dp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            app:mpb_progressTint="@color/yellow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,8 +28,11 @@
             android:layout_above="@+id/text_view_counter"
             android:layout_centerHorizontal="true"
             android:hint="@string/minutes"
+            android:textColorHint="@color/white"
             android:inputType="number"
             android:maxLength="4"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/white"
             android:text="@string/input_init"
             app:layout_constraintBottom_toTopOf="@+id/text_view_counter"
             app:layout_constraintEnd_toEndOf="@+id/text_view_counter"
@@ -41,7 +46,7 @@
             android:layout_alignTop="@+id/edit_text_input"
             android:layout_toEndOf="@+id/edit_text_input"
             android:text="@string/set"
-            android:backgroundTint="@color/purple_700"
+            android:backgroundTint="@color/dark_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/text_view_counter"
             app:layout_constraintStart_toStartOf="@+id/text_view_counter"
@@ -52,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/timer_time_00"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="60sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -70,20 +75,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_counter"
             app:layout_constraintHorizontal_bias="0.149"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintVertical_bias="0.624"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.624"/>
+
     <Button
             android:id="@+id/button_pause"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_counter"
             android:text="@string/pause"
-            android:backgroundTint="@color/yellow"
+            android:backgroundTint="@color/orange"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_counter"
             app:layout_constraintHorizontal_bias="0.149"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.624"/>
+
     <Button
             android:id="@+id/button_reset"
             android:layout_width="130dp"
@@ -97,13 +105,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.853"
             app:layout_constraintVertical_bias="0.624"/>
+
     <Button
             android:id="@+id/button_to_stopwatch"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_counter"
             android:text="@string/stopwatch"
-            android:backgroundTint="@color/purple_700"
+            android:backgroundTint="@color/dark_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_start"
@@ -116,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_counter"
             android:text="@string/timer"
-            android:backgroundTint="@color/purple_700"
+            android:backgroundTint="@color/dark_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_reset"

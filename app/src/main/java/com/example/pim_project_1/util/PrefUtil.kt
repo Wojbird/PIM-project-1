@@ -4,14 +4,22 @@ import android.content.Context
 import android.preference.PreferenceManager
 import com.example.pim_project_1.SecondFragment
 
-
 class PrefUtil {
     companion object {
 
+
+        private const val TIMER_LENGTH_ID = "com.example.pim_project_1.timer.timer_length"
+
         fun getTimerLength(context: Context): Int{
-            //placeholder
-            return 1
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getInt(TIMER_LENGTH_ID, 1)
         }
+
+        fun getTimerLengthFromEditText(seconds: Int, context: Context): Int{
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getInt(TIMER_LENGTH_ID, seconds)
+        }
+
 
         private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "com.example.pim_project_1.timer.previous_timer_length_seconds"
 
@@ -55,6 +63,7 @@ class PrefUtil {
             editor.putLong(SECONDS_REMAINING_ID, seconds)
             editor.apply()
         }
+        
 
         private const val ALARM_SET_TIME_ID = "com.example.pim_project_1.timer.backgrounded_time"
 
