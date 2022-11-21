@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.example.pim_project_1.databinding.FragmentSecondBinding
-import com.example.pim_project_1.util.PrefUtil
+import com.example.pim_project_1.util.PrefUtilTimer
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -28,7 +28,7 @@ class SecondFragment : Fragment() {
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.cancel(pendingIntent)
-            PrefUtil.setAlarmSetTime(0, context)
+            PrefUtilTimer.setAlarmSetTime(0, context)
         }
 
         val nowSeconds: Long
@@ -38,7 +38,7 @@ class SecondFragment : Fragment() {
         Stopped, Paused, Running, Setting
     }
 
-    private lateinit var timer: CountDownTimer
+    private lateinit var timerTimer: CountDownTimer
     private var timerLengthSeconds: Long = 0
     private var timerState = TimerState.Stopped
 
@@ -77,20 +77,20 @@ class SecondFragment : Fragment() {
             updateButtons()
         }
 
-        binding.buttonStart.setOnClickListener{
+        binding.buttonTimerStart.setOnClickListener{
             startTimer()
             timerState = TimerState.Running
             updateButtons()
         }
 
-        binding.buttonPause.setOnClickListener {
-            timer.cancel()
+        binding.buttonTimerPause.setOnClickListener {
+            timerTimer.cancel()
             timerState = TimerState.Paused
             updateButtons()
         }
 
-        binding.buttonReset.setOnClickListener {
-            timer.cancel()
+        binding.buttonTimerReset.setOnClickListener {
+            timerTimer.cancel()
             onTimerFinished()
         }
     }
@@ -106,16 +106,16 @@ class SecondFragment : Fragment() {
         super.onPause()
 
         if (timerState == TimerState.Running){
-            timer.cancel()
+            timerTimer.cancel()
         }
 
-        PrefUtil.setPreviousTimerLengthSeconds(timerLengthSeconds, requireContext().applicationContext)
-        PrefUtil.setSecondsRemaining(secondsRemaining, requireContext().applicationContext)
-        PrefUtil.setTimerState(timerState, requireContext().applicationContext)
+        PrefUtilTimer.setPreviousTimerLengthSeconds(timerLengthSeconds, requireContext().applicationContext)
+        PrefUtilTimer.setSecondsRemaining(secondsRemaining, requireContext().applicationContext)
+        PrefUtilTimer.setTimerState(timerState, requireContext().applicationContext)
     }
 
     private fun initTimer(){
-        timerState = PrefUtil.getTimerState(requireContext().applicationContext)
+        timerState = PrefUtilTimer.getTimerState(requireContext().applicationContext)
 
         //we don't want to change the length of the timer which is already running
         //if the length was changed in settings while it was backgrounded
@@ -125,12 +125,12 @@ class SecondFragment : Fragment() {
             setPreviousTimerLength()
 
         secondsRemaining = if (timerState == TimerState.Running || timerState == TimerState.Paused)
-            PrefUtil.getSecondsRemaining(requireContext().applicationContext)
+            PrefUtilTimer.getSecondsRemaining(requireContext().applicationContext)
         else
             timerLengthSeconds
 
         //resume where we left off
-        val alarmSetTime = PrefUtil.getAlarmSetTime(requireContext().applicationContext)
+        val alarmSetTime = PrefUtilTimer.getAlarmSetTime(requireContext().applicationContext)
         if (alarmSetTime > 0)
             secondsRemaining -= nowSeconds - alarmSetTime
 
@@ -152,7 +152,7 @@ class SecondFragment : Fragment() {
 
         binding.progressBar.progress = 0
 
-        PrefUtil.setSecondsRemaining(timerLengthSeconds, requireContext().applicationContext)
+        PrefUtilTimer.setSecondsRemaining(timerLengthSeconds, requireContext().applicationContext)
         secondsRemaining = timerLengthSeconds
 
         updateButtons()
@@ -162,7 +162,7 @@ class SecondFragment : Fragment() {
     private fun startTimer(){
         timerState = TimerState.Running
 
-        timer = object : CountDownTimer(secondsRemaining * 1000, 1000) {
+        timerTimer = object : CountDownTimer(secondsRemaining * 1000, 1000) {
             override fun onFinish() = onTimerFinished()
 
             override fun onTick(millisUntilFinished: Long) {
@@ -178,14 +178,14 @@ class SecondFragment : Fragment() {
         val text = binding.editTextInput.text.toString()
 
         val lengthInMinutes: Int = if(text.isNotEmpty()){
-            PrefUtil.getTimerLengthFromEditText(text.toInt(), requireContext().applicationContext)
+            PrefUtilTimer.getTimerLengthFromEditText(text.toInt(), requireContext().applicationContext)
         } else{
-            PrefUtil.getTimerLength(requireContext().applicationContext)
+            PrefUtilTimer.getTimerLength(requireContext().applicationContext)
         }
 
         timerLengthSeconds = (lengthInMinutes * 60L)
         binding.progressBar.max = timerLengthSeconds.toInt()
-        PrefUtil.setSecondsRemaining(timerLengthSeconds, requireContext().applicationContext)
+        PrefUtilTimer.setSecondsRemaining(timerLengthSeconds, requireContext().applicationContext)
         secondsRemaining = timerLengthSeconds
 
         updateButtons()
@@ -193,13 +193,13 @@ class SecondFragment : Fragment() {
     }
 
     private fun setNewTimerLength(){
-        val lengthInMinutes = PrefUtil.getTimerLength(requireContext().applicationContext)
+        val lengthInMinutes = PrefUtilTimer.getTimerLength(requireContext().applicationContext)
         timerLengthSeconds = (lengthInMinutes * 60L)
         binding.progressBar.max = timerLengthSeconds.toInt()
     }
 
     private fun setPreviousTimerLength(){
-        timerLengthSeconds = PrefUtil.getPreviousTimerLengthSeconds(requireContext(). applicationContext)
+        timerLengthSeconds = PrefUtilTimer.getPreviousTimerLengthSeconds(requireContext(). applicationContext)
         binding.progressBar.max = timerLengthSeconds.toInt()
     }
 
@@ -220,30 +220,30 @@ class SecondFragment : Fragment() {
             TimerState.Running ->{
                 binding.editTextInput.isVisible = false
                 binding.buttonSet.isVisible = false
-                binding.buttonStart.isEnabled = false
-                binding.buttonPause.isEnabled = true
-                binding.buttonReset.isEnabled = true
+                binding.buttonTimerStart.isEnabled = false
+                binding.buttonTimerPause.isEnabled = true
+                binding.buttonTimerReset.isEnabled = true
             }
             TimerState.Stopped -> {
                 binding.editTextInput.isVisible = false
                 binding.buttonSet.isVisible = false
-                binding.buttonStart.isEnabled = true
-                binding.buttonPause.isEnabled = false
-                binding.buttonReset.isEnabled = true
+                binding.buttonTimerStart.isEnabled = true
+                binding.buttonTimerPause.isEnabled = false
+                binding.buttonTimerReset.isEnabled = true
             }
             TimerState.Paused -> {
                 binding.editTextInput.isVisible = false
                 binding.buttonSet.isVisible = false
-                binding.buttonStart.isEnabled = true
-                binding.buttonPause.isEnabled = false
-                binding.buttonReset.isEnabled = true
+                binding.buttonTimerStart.isEnabled = true
+                binding.buttonTimerPause.isEnabled = false
+                binding.buttonTimerReset.isEnabled = true
             }
             TimerState.Setting -> {
                 binding.editTextInput.isVisible = true
                 binding.buttonSet.isVisible = true
-                binding.buttonStart.isEnabled = true
-                binding.buttonPause.isEnabled = false
-                binding.buttonReset.isEnabled = true
+                binding.buttonTimerStart.isEnabled = true
+                binding.buttonTimerPause.isEnabled = false
+                binding.buttonTimerReset.isEnabled = true
             }
         }
     }

@@ -15,7 +15,6 @@
             android:minWidth="425dp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:progress="75"
             app:mpb_progressTint="@color/yellow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -35,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
-            android:id="@+id/button_start"
+            android:id="@+id/button_stopwatch_start"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_counter"
@@ -49,7 +48,7 @@
             app:layout_constraintVertical_bias="0.615"/>
 
     <Button
-            android:id="@+id/button_pause"
+            android:id="@+id/button_stopwatch_pause"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_counter"
@@ -63,7 +62,7 @@
             app:layout_constraintVertical_bias="0.615"/>
 
     <Button
-            android:id="@+id/button_reset"
+            android:id="@+id/button_stopwatch_reset"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_counter"
@@ -85,7 +84,7 @@
             android:backgroundTint="@color/dark_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_start"
+            app:layout_constraintTop_toBottomOf="@+id/button_stopwatch_start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.15"/>
 
@@ -98,7 +97,7 @@
             android:backgroundTint="@color/dark_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_reset"
+            app:layout_constraintTop_toBottomOf="@+id/button_stopwatch_reset"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.853"/>
 

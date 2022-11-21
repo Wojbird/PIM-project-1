@@ -1,14 +1,14 @@
 package com.example.pim_project_1.util
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.example.pim_project_1.SecondFragment
 
-class PrefUtil {
+class PrefUtilTimer {
     companion object {
 
 
-        private const val TIMER_LENGTH_ID = "com.example.pim_project_1.timer.timer_length"
+        private const val TIMER_LENGTH_ID = "com.example.pim_project_1.timerTimer.timer_length"
 
         fun getTimerLength(context: Context): Int{
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -21,7 +21,7 @@ class PrefUtil {
         }
 
 
-        private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "com.example.pim_project_1.timer.previous_timer_length_seconds"
+        private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "com.example.pim_project_1.timerTimer.previous_timer_length_seconds"
 
         fun getPreviousTimerLengthSeconds(context: Context): Long{
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -35,7 +35,7 @@ class PrefUtil {
         }
 
 
-        private const val TIMER_STATE_ID = "com.example.pim_project_1.timer.timer_state"
+        private const val TIMER_STATE_ID = "com.example.pim_project_1.timerTimer.timer_state"
 
         fun getTimerState(context: Context): SecondFragment.TimerState{
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -51,7 +51,7 @@ class PrefUtil {
         }
 
 
-        private const val SECONDS_REMAINING_ID = "com.example.pim_project_1.timer.seconds_remaining"
+        private const val SECONDS_REMAINING_ID = "com.example.pim_project_1.timerTimer.seconds_remaining"
 
         fun getSecondsRemaining(context: Context): Long{
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -63,9 +63,9 @@ class PrefUtil {
             editor.putLong(SECONDS_REMAINING_ID, seconds)
             editor.apply()
         }
-        
 
-        private const val ALARM_SET_TIME_ID = "com.example.pim_project_1.timer.backgrounded_time"
+
+        private const val ALARM_SET_TIME_ID = "com.example.pim_project_1.timerTimer.backgrounded_time"
 
         fun getAlarmSetTime(context: Context): Long{
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
