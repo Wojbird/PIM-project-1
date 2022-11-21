@@ -1,34 +1,85 @@
- 
-import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import React, {useState} from 'react';
+import { SafeAreaView, StyleSheet, View, Button, TextInput } from 'react-native';
 import { Timer } from 'react-native-progress-timer';
+import { Stop } from 'react-native-svg';
 import Stopwatch from './android/lib/stopwatch';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TimePicker from 'react-native-simple-time-picker';
 
+function HomeScreen({ navigation }) {
+ 
+  const [number, onChangeNumber] = React.useState(null);
 
-export default function App() {
   return (
-    <>
-      <SafeAreaView>
-          <View style={styles.body}>
-              <View><Timer
-                remainingTime={60}
-                size={350}
-                showsText={true}
-                animated={true}
-                direction={'counter-clockwise'}
-                borderColor= {'#d9dcdd'}
-                borderWidth= {3}
-                thickness={5}
-                color={'#faac02'}
-                style={options.style}
-                textStyle={options.textStyle}
-              ></Timer></View>
-            </View>
-  </SafeAreaView>
-  {/*<Stopwatch/>*/}
-    </>
+    <View >
+              <SafeAreaView>
+                        <View style={styles.body}>
+                              <TextInput
+                                style={styles.input}
+                                onChangeText={onChangeNumber}
+                                value={number}
+                                placeholder="seconds"
+                                keyboardType="numeric"
+                              />
+                            <Timer
+                              remainingTime={number}
+                              size={350}
+                              showsText={true}
+                              animated={true}
+                              direction={'counter-clockwise'}
+                              borderColor= {'#d9dcdd'}
+                              borderWidth= {3}
+                              thickness={5}
+                              color={'#faac02'}
+                              style={options.style}
+                              textStyle={options.textStyle}
+                            ></Timer>
+ 
+                                  <Button
+                                  title="Stopwatch"
+                                  onPress={() => navigation.navigate('Stoper')}
+      />
+                          </View>
+                      </SafeAreaView>
+                      
+    </View>
   );
 }
+
+function StopwatchScreen({navigation}) {
+  return (
+    <View>
+       <View style={styles.body}>    
+       {/*<Button style={styles.body}  title="Timer"
+       onPress={() => navigation.navigate('Home')}
+  />*/}
+      <Stopwatch />
+
+
+
+  
+    </View>        
+
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Stoper" component={StopwatchScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+
 const options = {
   style: {
     margin: 'auto',
@@ -74,5 +125,22 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: 'center',
     alignContent: 'center'
+  },
+  body2: {
+    alignItems: 'center',
+    alignContent: 'center',
+    paddingTop: '100%',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });

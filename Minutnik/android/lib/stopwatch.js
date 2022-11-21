@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, StatusBar, TouchableOpacity, Dimensions } from 'react-native';
+import * as Progress from 'react-native-progress';
+import * as moment from 'moment';
+require('moment-duration-format')
 
 const screen = Dimensions.get('window');
 
@@ -11,6 +14,15 @@ const getRemaining = (time) => {
     return { mins: formatNumber(mins), secs: formatNumber(secs) };
 }
 
+const  toggles = () => {
+    setIsActive(!isActive);
+  }
+
+ const reset = () => {
+    setRemainingSecs(0);
+    setIsActive(false);
+  }
+  
 function Stopwatch() {
   
   const [remainingSecs, setRemainingSecs] = useState(0);
@@ -31,30 +43,33 @@ function Stopwatch() {
   }, [isActive, remainingSecs]);
 
 
-  toggles = () => {
-    setIsActive(!isActive);
-  }
 
-  reset = () => {
-    setRemainingSecs(0);
-    setIsActive(false);
-  }
 
     return (
       <View>
-        <StatusBar barStyle="light-content" />
-      <Text style={styles.timerText}>{`${mins}:${secs}`}</Text>
-        <View style={styles.container}>
-          <TouchableOpacity onPress={() => { setIsActive(!isActive);}} style={styles.button}>
-              <Text style={styles.buttonText}>{isActive ? 'Pause' : 'Start'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setRemainingSecs(0); setIsActive(false); }} style={[styles.button, styles.buttonReset]}>
-              <Text style={[styles.buttonText, styles.buttonTextReset]}>Reset</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {alert("hell_o")}} style={[styles.button, styles.buttonReset]}>
-              <Text style={[styles.buttonText, styles.buttonTextReset]}>Stopwatch</Text>
-          </TouchableOpacity>
-      </View>
+        <View > 
+        <Text style={styles.timeCount}>{`${mins}:${secs}`}</Text>
+        {/*<Text style={styles.timerText}>{`${mins}:${secs}`}</Text>*/}
+        <Progress.Circle
+            style={styles.progress}
+            size={300}
+            showsText={false}
+            formatText={(remainingSecs) => {return moment.duration(remainingSecs, 'seconds').format('mm:ss', { trim: false }); }}
+            progress={(remainingSecs/60)%1}
+            indeterminate={false}
+            direction="clockwise"
+          ></Progress.Circle>
+            
+      </View>    
+      <View style={styles.view}> 
+              <TouchableOpacity onPress={() => { setRemainingSecs(0); setIsActive(false); }} style={[styles.button, styles.buttonReset]}>
+                <Text style={[styles.buttonText, styles.buttonTextReset]}>Reset</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setIsActive(!isActive);}} style={styles.button}>
+                <Text style={styles.buttonText}>{isActive ? 'Pause' : 'Start'}</Text>
+            </TouchableOpacity>
+     
+            </View>     
       </View>
     );
   }
@@ -63,18 +78,33 @@ function Stopwatch() {
 export default Stopwatch;
 
 const styles = StyleSheet.create({
-
+  view: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: "wrap",
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: '40%'
+  },
+timeCount: {
+  position: 'absolute',
+  left: '14%',
+  top: '27%',
+  color: '#000000',
+  fontSize: 90,
+  marginBottom: 20
+},
 container: {
   flex: 1,
   flexDirection: 'row',
   flexWrap: "wrap",
   alignItems: 'center',
+  marginBottom: 30,
   justifyContent: 'center',
-  backgroundColor: '#07121B',
 },
 button: {
-    borderWidth: 5,
-    borderColor: '#B9AAFF',
+    borderWidth: 1,
+    borderColor: '#000000',
     width: screen.width / 5,
     height: screen.width / 5,
     borderRadius: screen.width / 5,
@@ -83,19 +113,41 @@ button: {
     justifyContent: 'center'
 },
 buttonText: {
-    fontSize: 23,
-    color: '#B9AAFF'
+    fontSize: 20,
+    color: '#000000'
 },
 timerText: {
-    color: '#fff',
+    color: '#000000',
     fontSize: 90,
     marginBottom: 20
 },
 buttonReset: {
     marginTop: 20,
-    borderColor: "#FF851B"
-},
+    },
 buttonTextReset: {
-  color: "#FF851B"
-}
+  color: "#000000"
+},
+viewO: {
+  flexDirection: 'row', 
+  justifyContent: 'center', 
+  margin: 10
+},
+highlight: {
+  backgroundColor: '#ffffff'
+},
+play: {
+  underlayColor: '#ffffff',
+  borderColor: '#d9dcdd',
+  textStyle:{
+    color: '#000000'
+  },
+  style: {
+    backgroundColor: '#ffffff'
+  }
+},
+progress: {
+  margin: 10,
+
+  alignItems: 'center',
+},
 });
