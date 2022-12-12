@@ -14,7 +14,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
       appId: '4d4664737ab5435595d0ae6160b9b8e2',
       channelName: 'flutterApp2',
       tempToken:
-          '007eJxTYPjrLcg1t+ijh8p1Jbubzsf6y4tMBU+ul7m+0Pq6ZIdd9x8FBpMUEzMzE3Nj88QkUxNjU1NL0xSDxFQzQzODJMski1Sjk3umJDcEMjIkFc1mZWSAQBCfmyEtp7SkJLXIsaDAiIEBAPlBIZ4=',
+          '007eJxTYDi8N6Vyo9dv4zk1v5meK0h129m4+HYJ5SjZHHffl/a0+ocCg0mKiZmZibmxeWKSqYmxqamlaYpBYqqZoZlBkmWSRapRE/P05IZARoYFZmcZGKEQxOdmSMspLSlJLXIsKDBiYAAA7pUg6A==',
     ),
   );
 
